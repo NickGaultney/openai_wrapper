@@ -50,9 +50,10 @@
         }
 
         addMessage(content, role) {
+            const parsedContent = role === 'assistant' ? marked.parse(content) : this.escapeHtml(content);
             const messageHtml = `
                 <div class="chat-message ${role}">
-                    <div class="chat-message-content">${this.escapeHtml(content)}</div>
+                    <div class="chat-message-content">${parsedContent}</div>
                 </div>
             `;
             this.messages.append(messageHtml);
