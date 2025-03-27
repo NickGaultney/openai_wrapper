@@ -111,7 +111,7 @@ class OpenAIClient {
             'headers' => [
                 'Authorization' => "Bearer {$this->api_key}",
                 'Content-Type' => 'application/json',
-                'OpenAI-Beta' => 'assistants=v1',
+                'OpenAI-Beta' => 'assistants=v2',
             ],
             'timeout' => $this->timeout,
             'method' => $method,
