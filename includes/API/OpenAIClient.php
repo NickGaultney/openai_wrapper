@@ -4,15 +4,13 @@ namespace OpenAIWrapper\API;
 
 class OpenAIClient {
     private string $api_key;
-    private string $model_type;
     private string $assistant_id;
     private string $api_base = 'https://api.openai.com/v1';
     private int $timeout = 60; // Increased timeout to 60 seconds
     private int $max_retries = 3;
 
-    public function __construct(string $api_key, string $model_type, string $assistant_id) {
+    public function __construct(string $api_key, string $assistant_id) {
         $this->api_key = $api_key;
-        $this->model_type = $model_type;
         $this->assistant_id = $assistant_id;
     }
 

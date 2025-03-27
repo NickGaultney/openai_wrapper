@@ -40,10 +40,10 @@ class RestEndpoints {
     }
 
     public function handle_chat_request(WP_REST_Request $request): WP_REST_Response|WP_Error {
-        if (!SettingsHelper::is_configured()) {
+        if (!SettingsHelper::get_api_key()) {
             return new WP_Error(
                 'openai_wrapper_not_configured',
-                __('OpenAI Wrapper is not properly configured.', 'openai-wrapper'),
+                __('OpenAI API Key is not configured.', 'openai-wrapper'),
                 ['status' => 500]
             );
         }
@@ -51,12 +51,20 @@ class RestEndpoints {
         try {
             $message = $request->get_param('message');
             $thread_id = $request->get_param('thread_id');
+            $assistant_id = $request->get_param('assistant_id');
+
+            if (empty($assistant_id)) {
+                return new WP_Error(
+                    'missing_assistant_id',
+                    __('Assistant ID is required.', 'openai-wrapper'),
+                    ['status' => 400]
+                );
+            }
             
             // Initialize OpenAI client
             $openai = new OpenAIClient(
                 SettingsHelper::get_api_key(),
-                SettingsHelper::get_model_type(),
-                SettingsHelper::get_assistant_id()
+                $assistant_id
             );
 
             // Process the chat request

@@ -91,6 +91,7 @@
         }
 
         async makeRequest(message) {
+            const assistantId = this.element.data('assistant-id');
             const response = await fetch(`${openAIWrapper.ajaxUrl}/chat`, {
                 method: 'POST',
                 headers: {
@@ -99,7 +100,8 @@
                 },
                 body: JSON.stringify({
                     message: message,
-                    thread_id: this.threadId
+                    thread_id: this.threadId,
+                    assistant_id: assistantId
                 })
             });
 

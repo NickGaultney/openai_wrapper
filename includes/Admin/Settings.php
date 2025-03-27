@@ -9,8 +9,6 @@ class Settings {
     public function __construct() {
         $this->default_settings = [
             'api_key' => '',
-            'model_type' => 'gpt-4o',
-            'assistant_id' => '',
         ];
 
         add_action('admin_menu', [$this, 'add_settings_page']);
@@ -46,24 +44,6 @@ class Settings {
             'api_key',
             __('OpenAI API Key', 'openai-wrapper'),
             [$this, 'render_api_key_field'],
-            'openai-wrapper-settings',
-            'openai_wrapper_main'
-        );
-
-        // Model Type field
-        add_settings_field(
-            'model_type',
-            __('Model Type', 'openai-wrapper'),
-            [$this, 'render_model_type_field'],
-            'openai-wrapper-settings',
-            'openai_wrapper_main'
-        );
-
-        // Assistant ID field
-        add_settings_field(
-            'assistant_id',
-            __('Assistant ID', 'openai-wrapper'),
-            [$this, 'render_assistant_id_field'],
             'openai-wrapper-settings',
             'openai_wrapper_main'
         );
@@ -117,55 +97,11 @@ class Settings {
         <?php
     }
 
-    public function render_model_type_field(): void {
-        $options = get_option($this->option_name);
-        $models = [
-            'gpt-4o' => 'GPT-4O',
-            'gpt-4o-mini' => 'GPT-4O Mini',
-            'gpt-o1' => 'GPT-O1',
-            'gpt-o1-mini' => 'GPT-O1 Mini'
-        ];
-        ?>
-        <select id="model_type"
-                name="<?php echo esc_attr($this->option_name . '[model_type]'); ?>">
-            <?php foreach ($models as $value => $label) : ?>
-                <option value="<?php echo esc_attr($value); ?>"
-                    <?php selected($options['model_type'] ?? 'gpt-4o', $value); ?>>
-                    <?php echo esc_html($label); ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-        <?php
-    }
-
-    public function render_assistant_id_field(): void {
-        $options = get_option($this->option_name);
-        ?>
-        <input type="text"
-               id="assistant_id"
-               name="<?php echo esc_attr($this->option_name . '[assistant_id]'); ?>"
-               value="<?php echo esc_attr($options['assistant_id'] ?? ''); ?>"
-               class="regular-text"
-        />
-        <p class="description">
-            <?php esc_html_e('Enter your OpenAI Assistant ID', 'openai-wrapper'); ?>
-        </p>
-        <?php
-    }
-
     public function sanitize_settings(array $input): array {
         $sanitized = [];
 
         if (isset($input['api_key'])) {
             $sanitized['api_key'] = sanitize_text_field($input['api_key']);
-        }
-
-        if (isset($input['model_type'])) {
-            $sanitized['model_type'] = sanitize_text_field($input['model_type']);
-        }
-
-        if (isset($input['assistant_id'])) {
-            $sanitized['assistant_id'] = sanitize_text_field($input['assistant_id']);
         }
 
         return $sanitized;
