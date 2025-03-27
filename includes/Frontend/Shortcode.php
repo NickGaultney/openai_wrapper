@@ -55,6 +55,14 @@ class Shortcode {
             OPENAI_WRAPPER_VERSION
         );
 
+        // Add Prism CSS
+        wp_register_style(
+            'prism',
+            'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css',
+            [],
+            OPENAI_WRAPPER_VERSION
+        );
+
         wp_register_script(
             'marked',
             'https://cdn.jsdelivr.net/npm/marked/marked.min.js',
@@ -63,14 +71,32 @@ class Shortcode {
             true
         );
 
+        // Add Prism JS and its plugins
         wp_register_script(
-            'openai-wrapper',
-            OPENAI_WRAPPER_PLUGIN_URL . 'assets/scripts.js',
-            ['jquery', 'marked'],
+            'prism',
+            'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js',
+            [],
             OPENAI_WRAPPER_VERSION,
             true
         );
 
+        wp_register_script(
+            'prism-autoloader',
+            'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js',
+            ['prism'],
+            OPENAI_WRAPPER_VERSION,
+            true
+        );
+
+        wp_register_script(
+            'openai-wrapper',
+            OPENAI_WRAPPER_PLUGIN_URL . 'assets/scripts.js',
+            ['jquery', 'marked', 'prism', 'prism-autoloader'],
+            OPENAI_WRAPPER_VERSION,
+            true
+        );
+
+        wp_enqueue_style('prism');
         wp_localize_script('openai-wrapper', 'openAIWrapper', [
             'ajaxUrl' => rest_url('openai-wrapper/v1'),
             'nonce' => wp_create_nonce('wp_rest'),

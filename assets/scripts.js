@@ -50,13 +50,31 @@
         }
 
         addMessage(content, role) {
-            const parsedContent = role === 'assistant' ? marked.parse(content) : this.escapeHtml(content);
+            let parsedContent;
+            if (role === 'assistant') {
+                // Configure marked to add language class to code blocks
+                marked.setOptions({
+                    highlight: function(code, lang) {
+                        return `<pre><code class="language-${lang}">${code}</code></pre>`;
+                    }
+                });
+                parsedContent = marked.parse(content);
+            } else {
+                parsedContent = this.escapeHtml(content);
+            }
+
             const messageHtml = `
                 <div class="chat-message ${role}">
                     <div class="chat-message-content">${parsedContent}</div>
                 </div>
             `;
             this.messages.append(messageHtml);
+            
+            // Highlight code blocks
+            if (role === 'assistant') {
+                Prism.highlightAllUnder(this.messages[0]);
+            }
+
             this.scrollToBottom();
         }
 
