@@ -44,9 +44,17 @@ class Shortcode {
         );
 
         wp_register_script(
+            'marked',
+            'https://cdn.jsdelivr.net/npm/marked/marked.min.js',
+            [],
+            OPENAI_WRAPPER_VERSION,
+            true
+        );
+
+        wp_register_script(
             'openai-wrapper',
             OPENAI_WRAPPER_PLUGIN_URL . 'assets/scripts.js',
-            ['jquery'],
+            ['jquery', 'marked'],
             OPENAI_WRAPPER_VERSION,
             true
         );

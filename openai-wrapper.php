@@ -67,29 +67,4 @@ register_activation_hook(__FILE__, function() {
 // Deactivation hook
 register_deactivation_hook(__FILE__, function() {
     // Cleanup if needed
-});
-
-public function enqueue_assets(): void {
-    wp_register_style(
-        'openai-wrapper',
-        OPENAI_WRAPPER_PLUGIN_URL . 'assets/styles.css',
-        [],
-        OPENAI_WRAPPER_VERSION
-    );
-
-    wp_register_script(
-        'marked',
-        'https://cdn.jsdelivr.net/npm/marked/marked.min.js',
-        [],
-        OPENAI_WRAPPER_VERSION,
-        true
-    );
-
-    wp_register_script(
-        'openai-wrapper',
-        OPENAI_WRAPPER_PLUGIN_URL . 'assets/scripts.js',
-        ['jquery', 'marked'],
-        OPENAI_WRAPPER_VERSION,
-        true
-    );
-} 
+}); 
